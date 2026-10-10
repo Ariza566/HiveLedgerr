@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7-jammy
+    container_name: beeproof-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: beeproof-ai-service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: beeproof-backend
+    restart: unless-stopped
+    environment:
+      PORT: 8080
+      MONGODB_URI: mongodb://mongodb:27017/beeproof
+      JWT_SECRET: ${JWT_SECRET:-beeproofSuperSecretKeyForJwtSigning2026!}
+      AI_SERVICE_URL: http://ai-service:8000
+      SOLANA_PROGRAM_ID: 8eLXGBggKm9Svwpq1UXUbrZeFTvEEosfwkXYcSP7WxeY
+      SOLANA_RPC_URL: https://api.devnet.solana.com
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+      - ai-service
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: beeproof-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:
+    driver: local
