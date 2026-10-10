@@ -65,3 +65,4 @@ pub struct UpdateIntegrityHash<'info> {
     pub batch_record: Account<'info, BatchRecord>,
     pub authority: Signer<'info>,
 }
+// Blockchain logic for BeeProof honey traceability.
