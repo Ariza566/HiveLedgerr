@@ -106,6 +106,6 @@ class TestBeeProofAIService(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         data = res.json()
         self.assertEqual(data["status"], "INSUFFICIENT_HISTORY")
-
+# Medical and scientific disclaimer
 if __name__ == "__main__":
     unittest.main()
