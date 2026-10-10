@@ -14,6 +14,7 @@ Key Principles:
 from typing import Dict, List, Any, Optional
 
 # Medical and scientific disclaimer
+# Medical and scientific disclaimer
 DISCLAIMER_TEXT = (
     "AI-assisted visual screening indicator only. Detections do NOT constitute "
     "a confirmed veterinary diagnosis or certified laboratory test. "
