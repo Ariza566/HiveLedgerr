@@ -2,6 +2,7 @@ const http = require('http');
 const { app, startServer } = require('../src/server');
 
 // Helper to make HTTP requests
+// Helper to make HTTP requests
 function request(port, method, path, body = null, token = null) {
   return new Promise((resolve, reject) => {
     const headers = {
