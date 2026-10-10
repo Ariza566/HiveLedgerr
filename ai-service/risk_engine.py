@@ -13,14 +13,14 @@ Key Principles:
 
 from typing import Dict, List, Any, Optional
 
-# Medical and scientific disclaimer
+
 DISCLAIMER_TEXT = (
     "AI-assisted visual screening indicator only. Detections do NOT constitute "
     "a confirmed veterinary diagnosis or certified laboratory test. "
     "Expert inspection and field/laboratory testing (e.g. microscopic examination, "
     "ropiness test, spore analysis) are strongly recommended before initiating treatment."
 )
-
+# Medical and scientific disclaimer
 CLASS_METADATA = {
     "american-foulbrood": {
         "display_name": "American Foulbrood (AFB)",
