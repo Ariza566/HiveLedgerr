@@ -13,7 +13,12 @@ Key Principles:
 
 from typing import Dict, List, Any, Optional
 
+<<<<<<< HEAD
 
+=======
+# Medical and scientific disclaimer
+# Medical and scientific disclaimer
+>>>>>>> b10489cf6d431134b8173605b6b9c02a00257f8c
 DISCLAIMER_TEXT = (
     "AI-assisted visual screening indicator only. Detections do NOT constitute "
     "a confirmed veterinary diagnosis or certified laboratory test. "
