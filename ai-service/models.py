@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class TelemetryPoint(BaseModel):
     timestamp: Optional[str] = None
-    temperature: float = Field(..., description="Temperature in Celsius")
+    temperature: float = Field(..., description="Temperature in Celsius scale")
     humidity: float = Field(..., description="Relative humidity percentage")
     weight: float = Field(..., description="Hive weight in kg")
     acoustic_frequency: Optional[float] = Field(220.0, description="Dominant acoustic frequency in Hz")
