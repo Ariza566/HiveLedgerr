@@ -2,7 +2,7 @@
 
 This directory is designated for the decentralized ledger smart contracts and immutability verification scheduled for **Phase 2**.
 
-## Phase 2 Scope
+## Phase 2 Scope and functions
 - **Cryptographic Batch Attestation**: Anchoring harvest events, processor transitions, and lab certificates onto an immutable ledger.
 - **Smart Contracts**: Tracking custody transfer from beekeeper cluster -> processor -> testing lab -> distributor.
 - **Tamper-Evident QR Records**: Linking consumer-scanned batches to verified on-chain state proofs.
