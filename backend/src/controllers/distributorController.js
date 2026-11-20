@@ -77,7 +77,7 @@ class DistributorController {
         return res.status(404).json({ success: false, message: 'Batch not found' });
       }
 
-      // Validate transition: PACKAGED -> DISPATCHED
+      
       stateMachineService.validateTransition(batch.status, 'DISPATCHED', req.user.role);
 
       const tracking = trackingReference || `TRK-ECO-2026-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -112,7 +112,7 @@ class DistributorController {
       });
       await batch.save();
 
-      // Record on blockchain
+      
       try {
         const bcResult = await blockchainService.recordStageEventOnChain(
           cleanNumber,
@@ -156,7 +156,7 @@ class DistributorController {
         return res.status(404).json({ success: false, message: 'Batch not found' });
       }
 
-      // Validate transition: DISPATCHED -> DELIVERED
+      
       stateMachineService.validateTransition(batch.status, 'DELIVERED', req.user.role);
 
       const event = await DistributionEvent.findOne({
@@ -182,7 +182,7 @@ class DistributorController {
       });
       await batch.save();
 
-      // Record on blockchain
+    
       try {
         await blockchainService.recordStageEventOnChain(
           cleanNumber,

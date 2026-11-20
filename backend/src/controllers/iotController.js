@@ -37,7 +37,7 @@ class IotController {
         return res.status(404).json({ success: false, message: 'Alert not found' });
       }
 
-      // Check if any unread alerts remain for the hive
+     
       const remainingUnread = await HiveAlert.countDocuments({ hive: alert.hive, status: 'UNREAD' });
       if (remainingUnread === 0) {
         await Hive.findByIdAndUpdate(alert.hive, { status: 'ACTIVE' });

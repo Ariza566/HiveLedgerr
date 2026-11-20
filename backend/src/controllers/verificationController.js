@@ -17,14 +17,13 @@ class VerificationController {
 
     if (!batch) return null;
 
-    // 1. Real cryptographic 7-field data integrity verification with smart contract
+    
     const integrity = await blockchainService.verifyIntegrity(batch);
 
-    // Verify status comes directly from CURRENT MONGODB DATA -> SHA-256 -> BLOCKCHAIN HASH comparison
     const isVerified = Boolean(integrity.verified);
     const isTampered = Boolean(!integrity.verified);
 
-    // 2. Fetch all stage events
+  
     const [harvest, processing, qualityReport, packageItem, distribution] = await Promise.all([
       HarvestEvent.findOne({ batch: batch._id }),
       ProcessingEvent.findOne({ batch: batch._id }),
@@ -33,10 +32,10 @@ class VerificationController {
       DistributionEvent.findOne({ batch: batch._id })
     ]);
 
-    // 3. Build authentic chronological timeline (ONLY events that actually occurred)
+    
     const timeline = [];
 
-    // Harvest stage (Always present for valid batches)
+  
     timeline.push({
       stage: 'HARVEST',
       title: 'Apiary Harvest Logged',
@@ -47,7 +46,7 @@ class VerificationController {
       completed: true
     });
 
-    // Processing stage (if recorded)
+    
     if (processing) {
       timeline.push({
         stage: 'PROCESSING',
@@ -70,7 +69,7 @@ class VerificationController {
       });
     }
 
-    // Quality testing stage (if recorded)
+  
     if (qualityReport) {
       timeline.push({
         stage: 'TESTING',
@@ -83,7 +82,7 @@ class VerificationController {
       });
     }
 
-    // Packaging stage (if recorded)
+    
     if (packageItem) {
       timeline.push({
         stage: 'PACKAGING',
@@ -106,7 +105,7 @@ class VerificationController {
       });
     }
 
-    // Distribution stage (if recorded)
+    
     if (distribution) {
       timeline.push({
         stage: 'DISTRIBUTION',
@@ -119,7 +118,7 @@ class VerificationController {
       });
     }
 
-    // Quality summary formatting
+  
     const qualitySummary = qualityReport ? {
       certificateNumber: qualityReport.certificateNumber,
       laboratoryName: qualityReport.labName,

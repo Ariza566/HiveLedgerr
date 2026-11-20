@@ -72,13 +72,13 @@ class QualityLabController {
       const nmrPassed = Boolean(nmrSpectroscopyPassed);
       const c4Detected = Boolean(c4SugarAdulterationDetected);
 
-      // Verdict criteria
+      
       const explicitReject = req.body.passTest === false || req.body.action === 'REJECT' || req.body.reject === true;
       const passed = !explicitReject && nmrPassed && !c4Detected && moisture <= 20.0;
       const overallVerdict = passed ? 'PASS' : 'FAIL';
       const nextStatus = passed ? 'QUALITY_VERIFIED' : (explicitReject ? 'REJECTED' : 'ON_HOLD');
 
-      // Validate transition
+    
       stateMachineService.validateTransition(batch.status, nextStatus, req.user.role);
 
       const certNum = certificateNumber || `BP-NABL-2026-${Math.floor(1000 + Math.random() * 9000)}`;
@@ -109,7 +109,7 @@ class QualityLabController {
       });
       await batch.save();
 
-      // Record on blockchain
+      
       try {
         const bcResult = await blockchainService.recordQualityCertificateOnChain(
           cleanNumber,

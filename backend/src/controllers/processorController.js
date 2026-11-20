@@ -49,7 +49,7 @@ class ProcessorController {
         return res.status(404).json({ success: false, message: 'Batch not found' });
       }
 
-      // Validate transition: HARVESTED -> COLLECTED
+  
       stateMachineService.validateTransition(batch.status, 'COLLECTED', req.user.role);
 
       batch.status = 'COLLECTED';
@@ -61,7 +61,7 @@ class ProcessorController {
       });
       await batch.save();
 
-      // Record on blockchain
+      
       try {
         await blockchainService.recordStageEventOnChain(
           cleanNumber,
@@ -97,7 +97,7 @@ class ProcessorController {
         return res.status(404).json({ success: false, message: 'Batch not found' });
       }
 
-      // Validate transition: COLLECTED -> PROCESSING
+    
       stateMachineService.validateTransition(batch.status, 'PROCESSING', req.user.role);
 
       const temp = Number(filtrationTemperatureCelsius) || 38.5;
@@ -131,7 +131,7 @@ class ProcessorController {
       });
       await batch.save();
 
-      // Record on blockchain
+  
       try {
         const bcResult = await blockchainService.recordStageEventOnChain(
           cleanNumber,
@@ -175,7 +175,7 @@ class ProcessorController {
         return res.status(404).json({ success: false, message: 'Batch not found' });
       }
 
-      // CRITICAL GUARD: Only QUALITY_VERIFIED batches can be packaged!
+      
       stateMachineService.validateTransition(batch.status, 'PACKAGED', req.user.role);
 
       const generatedLot = lotNumber || `LOT-${cleanNumber.replace(/[^A-Z0-9]/g, '')}`;
@@ -214,7 +214,7 @@ class ProcessorController {
       });
       await batch.save();
 
-      // Record on blockchain
+      
       try {
         await blockchainService.recordStageEventOnChain(
           cleanNumber,

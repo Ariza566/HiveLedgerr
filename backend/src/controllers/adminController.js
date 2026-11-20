@@ -32,7 +32,7 @@ class AdminController {
         ['QUALITY_VERIFIED', 'CERTIFIED', 'PACKAGED', 'DISPATCHED', 'DELIVERED'].includes(b.status)
       ).length;
 
-      // Cluster production rankings
+    
       const clusterRankings = clusters.map((c, idx) => {
         const clusterBatches = batches.filter(b =>
           String(b.cluster?._id || b.cluster) === String(c._id) || b.clusterCode === c.clusterCode
@@ -52,7 +52,7 @@ class AdminController {
         };
       }).sort((a, b) => b.productionKg - a.productionKg);
 
-      // Floral source breakdown
+     
       const floraMap = {};
       batches.forEach(b => {
         const flora = b.floralSource || 'Multifloral Forest';
@@ -73,7 +73,7 @@ class AdminController {
         ];
       }
 
-      // Compute monthly honey production (Apr-Sep)
+   
       const monthNames = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
       const monthIndices = [3, 4, 5, 6, 7, 8];
       const monthlyBaselines = [185.0, 320.5, 410.0, 290.0, 485.5, 260.0];
@@ -95,7 +95,7 @@ class AdminController {
       return res.json({
         success: true,
         data: {
-          // Frontend AdminAnalyticsSummary properties
+          
           totalProductionKg: Number(totalProductionKg.toFixed(1)),
           totalBatchesCount: batches.length,
           certifiedBatchesCount,
@@ -112,7 +112,6 @@ class AdminController {
           monthlyProduction,
           disclaimer: 'Data cryptographically reconciled with EVM smart contract state proofs.',
 
-          // Backward compatibility properties
           totalClusters: clusters.length,
           totalBeekeepers: beekeepers.length,
           totalHives: hives.length,
@@ -478,9 +477,7 @@ class AdminController {
     }
   }
 
-  /**
-   * Intentionally tamper with database batch data to test cryptographic tamper detection
-   */
+  
   async tamperBatch(req, res, next) {
     try {
       const { batchNumber } = req.params;
@@ -491,7 +488,7 @@ class AdminController {
         return res.status(404).json({ success: false, message: 'Batch not found' });
       }
 
-      // Save backup of original authentic data if not already saved
+      
       if (!batch.originalDataBackup) {
         batch.originalDataBackup = {
           totalQuantityKg: batch.totalQuantityKg,
@@ -503,7 +500,7 @@ class AdminController {
       const prevQty = batch.totalQuantityKg;
       const prevFloral = batch.floralSource;
 
-      // Intentionally alter data in MongoDB
+      
       const customQty = (req.body && req.body.modifiedQuantity !== undefined && !isNaN(Number(req.body.modifiedQuantity)))
         ? Number(req.body.modifiedQuantity)
         : (batch.totalQuantityKg + 100.0);
@@ -542,9 +539,7 @@ class AdminController {
     }
   }
 
-  /**
-   * Restore tampered batch to its original authentic values and re-run cryptographic verification
-   */
+  
   async restoreBatch(req, res, next) {
     try {
       const { batchNumber } = req.params;
@@ -562,7 +557,7 @@ class AdminController {
 
       let originalData = batch.originalDataBackup;
 
-      // Safe fallback: if originalDataBackup is missing, check HarvestEvent for authentic historical data
+      
       if (!originalData) {
         const HarvestEvent = require('../models/HarvestEvent');
         const harvest = await HarvestEvent.findOne({ batch: batch._id });
@@ -608,7 +603,7 @@ class AdminController {
         await batch.save();
       }
 
-      // Step 4: Run normal cryptographic verification on restored data
+     
       const blockchainService = require('../services/blockchainService');
       const integrity = await blockchainService.verifyIntegrity(batch);
       const computedHash = await blockchainService.computeCanonicalHash(batch);
@@ -617,7 +612,7 @@ class AdminController {
         ? restoredFields.map(f => `${f.field} (from "${f.previousValue}" to "${f.restoredValue}")`).join(', ')
         : 'All database fields restored to authentic genesis state';
 
-      // Step 11: Add an audit log for the resolution action
+      
       await AuditLog.create({
         username: req.user ? req.user.username : 'admin',
         role: req.user ? (req.user.role || 'ADMIN_KVIC') : 'ADMIN_KVIC',

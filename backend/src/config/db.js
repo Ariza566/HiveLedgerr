@@ -19,7 +19,7 @@ async function connectDB() {
     }
   }
 
-  // Try standard local MongoDB default
+
   try {
     const defaultLocalUri = 'mongodb://127.0.0.1:27017/beeproof';
     await mongoose.connect(defaultLocalUri, { serverSelectionTimeoutMS: 2000 });

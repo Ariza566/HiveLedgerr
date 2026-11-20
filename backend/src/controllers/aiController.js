@@ -9,7 +9,7 @@ class AiController {
       const hiveId = req.params.hiveId;
       const telemetry = await iotService.getHiveTelemetry(hiveId);
 
-      // Fetch historical harvest yields for this hive (if available)
+      
       const historicalBatches = await HoneyBatch.find({
         $or: [
           { hive: telemetry.hiveId },
@@ -18,7 +18,7 @@ class AiController {
       }).select('totalQuantityKg');
       const historicalYields = historicalBatches.map(b => Number(b.totalQuantityKg)).filter(q => !isNaN(q) && q > 0);
 
-      // Fetch active alerts for this hive
+     
       const activeAlerts = await HiveAlert.find({
         $or: [
           { hive: telemetry.hiveId },
@@ -77,7 +77,7 @@ class AiController {
     return this.getHiveInsights(req, res, next);
   }
 
-  // --- Computer Vision Image Diagnosis ---
+  
   async diagnoseCombImage(req, res, next) {
     try {
       const hiveCode = req.params.hiveId || req.body.hiveCode || req.body.hive_code || 'SUN-HIVE-001';

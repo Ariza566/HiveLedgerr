@@ -253,7 +253,7 @@ class BeekeeperController {
         notes: notes || 'Comb honey harvest logged'
       });
 
-      // Record on real blockchain & MongoDB
+     
       try {
         const bcResult = await blockchainService.registerBatchOnChain(batch);
         batch.blockchainTxHash = bcResult.txHash;
@@ -270,7 +270,6 @@ class BeekeeperController {
 
       await batch.save();
 
-      // Record harvest event
       await HarvestEvent.create({
         batch: batch._id,
         batchNumber: batch.batchNumber,
